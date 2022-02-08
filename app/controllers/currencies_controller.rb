@@ -1,4 +1,5 @@
 class CurrenciesController < ApplicationController
+  
   def first_currency
   raw_data = open("https://api.exchangerate.host/symbols").read
   parsed_data = JSON.parse(raw_data)
@@ -24,13 +25,13 @@ class CurrenciesController < ApplicationController
   def rate_display
   @from_symbol = params.fetch("from_currency")
   @to_symbol = params.fetch("to_currency")
-  url = "https://api.exchangerate.host/from=" + @from_symbol + "&to=" + @to_symbol
+  url = "https://api.exchangerate.host/convert?from=" + @from_symbol + "&to=" + @to_symbol
   data = open(url).read
   parsed_data = JSON.parse(data)
-  rates_hash = parsed_data.fetch("rates")
-  @rate = rates_hash.fetch(@to_symbol)
+  @rate = parsed_data.fetch("result")
 
     render({ :template => "currency_templates/step_three.html.erb"})
   end 
+
 
 end
